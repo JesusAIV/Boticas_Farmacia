@@ -1,9 +1,9 @@
 :root {
     --header-height: 3rem;
     --nav-width: 68px;
-    --first-color: #0538A5;
-    --first-color-light: #AFA5D9;
-    --white-color: #afc1e9;
+    --first-color: #3DAB90;
+    --first-color-light: #FFFFFF;
+    --white-color: #3E517A;
     --body-font: 'Nunito', sans-serif;
     --normal-font-size: 1rem;
     --z-fixed: 100;
@@ -148,7 +148,7 @@ a {
 
 @media screen and (min-width: 768px) {
     body {
-        margin: calc(var(--header-height) + 1rem) 0 0 0;
+        margin: calc(var(--header-height) + 2rem) 0 0 0;
         padding-left: calc(var(--nav-width) + 2rem);
     }
 
@@ -178,4 +178,7 @@ a {
     .body-pd {
         padding-left: calc(var(--nav-width) + 188px);
     }
+}
+
+.container-main{
 }
