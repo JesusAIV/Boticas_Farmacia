@@ -193,7 +193,7 @@ a {
 
 .dash-top{
     display: grid;
-    grid-template-columns: 1fr 1fr;
+    grid-template-columns: 2fr 2fr;
     gap: 30px;
     
 
@@ -208,23 +208,68 @@ a {
 }
 .container-almacen{
     display: grid;
-    width: 100px;
-    float: left;
-    height: 100px;
-    grid-template-columns: 50% 50% 50% 50%;
-    gap: 1em;
+  grid-template-columns: auto auto ;
+  align-items: center;
+  gap: 1rem 6rem;
 
     
 }
   
 .btn-accion{
-    margin-top: 15px;
-    padding: 30px;
+    margin-top: 10px;
     display: flex;
-    flex-direction: column;
+    flex-direction: row;
     align-items: center;
     border-radius: 20px;
     background-color: #3E517A;
     color: #fff;
-
+    gap: 2rem;
+    padding: 30px 10px;
     }
+
+    .dash-bottom{
+        display: grid;
+    grid-template-columns: 1.2fr 2fr;
+    gap: 40px;
+    }
+
+ .container-panel{
+    display: flex;
+    grid-template-columns: auto auto;
+    align-items: center;
+    gap: 1rem 1rem;
+ }   
+
+ .btn-1{
+
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+    border-radius: 20px;
+    background-color: #3E517A;
+    color: #fff;
+    gap: 0.5rem;
+    padding: 9px 5px;
+ }
+
+.dash-contol{
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 40px;
+}
+
+.container-contol{
+    display: grid;
+  grid-template-columns: auto auto ;
+  gap: 1rem 6rem;
+}
+
+.btn-2{
+
+    display: flex;
+    border-radius: 20px;
+    background-color: #3E517A;
+    color: #fff;
+    gap: 1rem;
+    padding: 10px 5px;
+ }
