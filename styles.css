@@ -1,10 +1,11 @@
 :root {
     --header-height: 3rem;
     --nav-width: 68px;
-    --first-color: #0538A5;
-    --first-color-light: #AFA5D9;
-    --white-color: #afc1e9;
-    --body-font: 'Nunito', sans-serif;
+    --first-color: #3DAB90;
+    --first-color-light: #FFFFFF;
+    --white-color: #3E517A;
+    --body-font:
+    'Nunito', sans-serif;
     --normal-font-size: 1rem;
     --z-fixed: 100;
 }
@@ -12,12 +13,14 @@
 *,
 ::before,
 ::after {
+    margin: 0;
+    padding: 0;
     box-sizing: border-box;
 }
 
 body {
     position: relative;
-    margin: var(--header-height) 0 0 0;
+    /* margin: var(--header-height) 0 0 0; */
     padding: 0 1rem;
     font-family: var(--body-font);
     font-size: var(--normal-font-size);
@@ -148,8 +151,11 @@ a {
 
 @media screen and (min-width: 768px) {
     body {
-        margin: calc(var(--header-height) + 1rem) 0 0 0;
+        /* margin: calc(var(--header-height) + 2rem) 0 0 0; */
         padding-left: calc(var(--nav-width) + 2rem);
+        /* padding: 0; */
+        margin: 0;
+        width: 100vw;
     }
 
     .header {
@@ -178,4 +184,135 @@ a {
     .body-pd {
         padding-left: calc(var(--nav-width) + 188px);
     }
+}
+.box {
+        width: 100%;
+        height: 100%;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        background-color: #d9d9d9;
+        border-radius: 25px;
+        margin-bottom: 20px;
+    }
+.container-main{
+    height: 100vh;
+    display: grid;
+    grid-template-rows: 0.5fr 1fr;
+    gap: 10px;
+    padding: 5rem 0 1rem 0;
+    width: 100%;
+}
+
+.dash-top {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 30px;
+}
+
+.box-Bienvenido {
+    width: 94%;
+    height: 80%;
+    background-color: #e08e45;
+    border-radius: 25px;
+}
+
+.container-almacen {
+    display: grid;
+    grid-template-columns: auto auto;
+    align-items: center;
+    gap: 1rem 6rem;
+}
+
+.btn-accion {
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+    border-radius: 20px;
+    background-color: #3E517A;
+    color: #fff;
+    gap: 2rem;
+    padding: 20px 12px;
+    outline: none;
+    border: none;
+}
+
+.btn-small{
+    padding: 10px 6px;
+    font-size: 10px;
+}
+
+.container-panel {
+    display: flex;
+    grid-template-columns: auto auto;
+    align-items: center;
+    gap: 1rem 1rem;
+}
+
+.btn-1 {
+
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+    border-radius: 20px;
+    background-color: #3E517A;
+    color: #fff;
+    gap: 0.5rem;
+    padding: 9px 5px;
+}
+
+.dash-contol {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 40px;
+}
+
+.container-contol {
+    display: grid;
+    grid-template-columns: auto auto;
+    gap: 1rem 6rem;
+}
+
+.btn-2 {
+
+    display: flex;
+    border-radius: 20px;
+    background-color: #3E517A;
+    color: #fff;
+    gap: 1rem;
+    padding: 10px 5px;
+}
+
+.dash-bottom{
+    display: grid;
+    grid-template-columns: auto auto auto;
+    gap: 10px;
+}
+.panel{
+    margin-top: 5px;
+    /* height: 100%; */
+    display: grid;
+    grid-template-rows: auto 1fr;
+}
+.panel-body{
+    background-color: #d9d9d9;
+    border-radius: 25px;
+    padding: 15px;
+}
+.titulo-panel{
+    text-align: center;
+    font-size: 15px;
+    font-weight: 600;
+    margin-bottom: 10px;
+}
+.panel-acciones{
+    margin-top: 10px;
+    width: 100%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 0px 10px;
+}
+.panel-grafico {
+    height: 85%;
 }
