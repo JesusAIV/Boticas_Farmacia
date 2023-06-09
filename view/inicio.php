@@ -1,5 +1,8 @@
 <?php
-    session_start();
+    if (session_status() === PHP_SESSION_NONE) {
+        session_start();
+    }
+
     require_once "./config/constantes.php";
 
     $viewurl = "";
@@ -48,6 +51,20 @@
         }
     ?>
 
-    <?php require_once $vistas; ?>
+    <?php
+    $classMain = "";
+    if ($viewurl === 'gestion'){
+        include "layout/contentad.php";
+        $classMain = "container-main";
+    } else {
+        include "layout/header.php";
+        $classMain = "container-web";
+    }
+    ?>
+
+    <div class="<?php echo $classMain ?>">
+        <?php require_once $vistas; ?>
+    </div>
+
 </body>
 </html>

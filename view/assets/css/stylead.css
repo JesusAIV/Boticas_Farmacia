@@ -217,6 +217,37 @@ a {
     border-radius: 25px;
 }
 
+.bienvenida-img {
+    width: 80px;
+    height: 80px;
+    border-radius: 50%;
+    overflow: hidden;
+}
+
+.bienvenida-img img {
+    width: 100%;
+}
+
+.box-Bienvenido {
+    display: flex;
+    align-items: center;
+    gap: 20px;
+    padding-left: 20px;
+}
+
+.bienvenida-contenname {
+    color: #FFFFFF;
+}
+
+.bienvenida-name {
+    font-size: 1.7rem;
+    font-weight: 600;
+}
+
+.bienvenida-rol {
+    font-size: 1.2rem;
+}
+
 .container-almacen {
     display: grid;
     grid-template-columns: auto auto;
@@ -315,4 +346,133 @@ a {
 }
 .panel-grafico {
     height: 85%;
+}
+
+/* Pagina gestion usuarios */
+.container-table {
+    width: 90%;
+    margin: 0 auto;
+}
+
+.table {
+    width: 100%;
+}
+
+thead.thead_usuarios {
+    background-color: var(--white-color);
+    color: var(--first-color-light);
+    width: 100%;
+    border-bottom: 5px solid  #FFFFFF;
+}
+
+tr.tr-thead_usuarios {
+    width: 100%;
+}
+
+th.th_usuarios {
+    padding: 6px;
+}
+
+table.table_usuarios {
+    width: 100%;
+    border-collapse: collapse;
+    border-radius: 10px;
+    overflow: hidden;
+}
+
+tr.tr-tbody_usuarios {
+    border-bottom: 1px solid;
+}
+
+tbody.tbody_usuarios {
+    background-color: var(--first-color);
+    color: var(--first-color-light);
+    width: 100%;
+}
+
+td.td_usuarios {
+    padding: 8px;
+    text-align: center;
+    /* border: 1px solid; */
+    height: 100%;
+}
+
+td.td-acciones_usuarios {
+    display: flex;
+    align-items: center;
+    height: 100%;
+    gap: 10px;
+    color: #FFFFFF;
+}
+
+button.accion {
+    padding: 9px;
+    border-radius: 10px;
+    border: none;
+    outline: none;
+    cursor: pointer;
+    color: #FFFFFF;
+    font-weight: 700;
+}
+
+button.accion-ver_usuarios {
+    background-color: #F1C40F;
+}
+
+button.accion-editar_usuarios {
+    background-color: #2ECC71;
+}
+
+button.accion-eliminar_usuarios {
+    background-color: #E74C3C;
+}
+
+.container_pagination {
+    margin-top: 15px;
+    width: 100%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.pagination {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+}
+
+a.previous {}
+
+.pagination_control {
+    padding: 10px;
+    background-color: var(--white-color);
+    color: #FFFFFF;
+    border-radius: 10px;
+}
+
+.pagination_control a {
+    color: #FFFFFF;
+}
+
+.pagination_numbers {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+}
+
+a.number {
+    padding: 10px;
+    background-color: var(--white-color);
+    color: #FFFFFF;
+    border-radius: 10px;
+}
+a.number_active,
+a.number:hover{
+    background-color: var(--first-color);
+}
+a.error_registro {
+    background-color: #34495E;
+    padding: 5px;
+    color: #FFFFFF;
+    border-radius: 6px;
 }

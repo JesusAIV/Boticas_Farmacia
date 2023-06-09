@@ -6,7 +6,7 @@
     /**
      * URL base del sistema
      */
-    define('SERVERURL', $baseUrl);
+    define('SERVERURL', "http://localhost:8085/Boticas_Farmacia/");
 
     /**
      * Nombre del sistema

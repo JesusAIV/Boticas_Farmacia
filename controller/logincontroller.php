@@ -22,6 +22,7 @@ class loginController extends LoginModel{
         $respuesta = "";
 
         if ($numquery == 1) {
+            session_destroy();
             session_start();
 
             $listResultado = $datosSesion->fetch_assoc();
