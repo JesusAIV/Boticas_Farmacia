@@ -39,7 +39,8 @@ class gestionModel extends mainModel
      * @param int $cantidad
      * @return array Registros obtenidos
      */
-    protected function obtenerUsuariosM($idUser, $inicio, $cantidad) {
+    protected function obtenerUsuariosM($idUser, $inicio, $cantidad)
+    {
 
         $conexion = Connection::connect();
 
@@ -60,7 +61,8 @@ class gestionModel extends mainModel
      * @param int $idUser
      * @return int Total de usuarios
      */
-    protected function contarUsuariosM($idUser) {
+    protected function contarUsuariosM($idUser)
+    {
 
         $conexion = Connection::connect();
 
@@ -70,4 +72,5 @@ class gestionModel extends mainModel
 
         return $row['totalUsers'];
     }
+
 }

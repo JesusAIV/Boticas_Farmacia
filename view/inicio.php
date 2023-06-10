@@ -29,6 +29,8 @@
     <?php
         if (!empty($_SESSION['id']) && $viewurl == 'gestion') {
             echo '<link rel="stylesheet" type="text/css" href="'.SERVERURL.'view/assets/css/stylead.css">';
+            // echo '<script src="'.SERVERURL.'view/assets/js/graficos.js"></script>';
+            // echo '<script src="'.SERVERURL.'view/assets/js/gestion.js"></script>';
         } elseif ($viewurl == 'login') {
             echo '<link rel="stylesheet" type="text/css" href="'.SERVERURL.'view/assets/css/stylelogin.css">';
         }
@@ -65,6 +67,12 @@
     <div class="<?php echo $classMain ?>">
         <?php require_once $vistas; ?>
     </div>
+
+    <?php
+    if (!empty($_SESSION['id']) && $viewurl == 'gestion') {
+        echo '<script src="'.SERVERURL.'view/assets/js/gestion.js"></script>';
+    }
+    ?>
 
 </body>
 </html>
