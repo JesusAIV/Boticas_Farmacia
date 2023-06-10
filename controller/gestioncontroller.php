@@ -11,14 +11,16 @@ if ($ajax) {
 /**
  * Clase Controller para la gestion del sistema
  */
-class gestionController extends gestionModel{
+class gestionController extends gestionModel
+{
     /**
      * Funcion recibe el query de la funcion userByIdM
      *
      * @param int $idUser
      * @return array Datos del usuario
      */
-    public function userByIdC($idUser){
+    public function userByIdC($idUser)
+    {
         $datosUser = gestionModel::userByIdM($idUser);
 
         $numquery = $datosUser->num_rows;
@@ -34,7 +36,14 @@ class gestionController extends gestionModel{
         return $resultadoDatos;
     }
 
-    public function paginationUsers($idUser) {
+    /**
+     * Funcion para paginar la tabla de usuarios
+     *
+     * @param int $idUser
+     * @return mixed Retorna tabla en contenido HTML
+     */
+    public function paginationUsers($idUser)
+    {
         $pagina = isset($_GET['pagina']) ? $_GET['pagina'] : 1;
         $cantidad = 10;
 
@@ -53,7 +62,7 @@ class gestionController extends gestionModel{
 
         $tabla .= '
             <div class="table">
-                <table class="table_usuarios">
+                <table class="table_usuarios" id="table_usuarios">
                     <thead class="thead_usuarios">
                         <tr class="tr-thead_usuarios">
                             <th class="th_usuarios">ID</th>
@@ -72,14 +81,14 @@ class gestionController extends gestionModel{
         if (!empty($registros)) {
             foreach ($registros as $registro) {
                 $tabla .= '
-                    <tr class="tr-tbody_usuarios">
-                        <td class="td_usuarios">'.$registro['id'].'</td>
-                        <td class="td_usuarios">'.$registro['rol'].'</td>
-                        <td class="td_usuarios">'.$registro['numDoc'].'</td>
-                        <td class="td_usuarios">'.$registro['name'].' '.$registro['lastName'].'</td>
-                        <td class="td_usuarios">'.$registro['userName'].'</td>
-                        <td class="td_usuarios">'.$registro['email'].'</td>
-                        <td class="td_usuarios">'.$registro['telephone'].'</td>
+                    <tr class="tr-tbody_usuarios" data-id="' . $registro['id'] . '">
+                        <td class="td_usuarios">' . $registro['id'] . '</td>
+                        <td class="td_usuarios">' . $registro['rol'] . '</td>
+                        <td class="td_usuarios">' . $registro['numDoc'] . '</td>
+                        <td class="td_usuarios">' . $registro['name'] . ' ' . $registro['lastName'] . '</td>
+                        <td class="td_usuarios">' . $registro['userName'] . '</td>
+                        <td class="td_usuarios">' . $registro['email'] . '</td>
+                        <td class="td_usuarios">' . $registro['telephone'] . '</td>
                         <td class="td_usuarios td-acciones_usuarios">
                             <button class="accion accion-ver_usuarios">Ver</button>
                             <button class="accion accion-editar_usuarios">Editar</button>
@@ -88,7 +97,7 @@ class gestionController extends gestionModel{
                     </tr>
                 ';
             }
-                $tabla .= '
+            $tabla .= '
                 </tbody>
             </table>
         </div>
@@ -96,35 +105,35 @@ class gestionController extends gestionModel{
             <div class="pagination">
         ';
 
-        if ($pagina > 1) {
-            $tabla .= '
+            if ($pagina > 1) {
+                $tabla .= '
                 <div class="pagination_control pagination_previous">
-                    <a href="'.SERVERURL.'gestion/usuarios?pagina='.($pagina-1).'" class="previous">Anterior</a>
+                    <a href="' . SERVERURL . 'gestion/usuarios?pagina=' . ($pagina - 1) . '" class="previous">Anterior</a>
                 </div>
             ';
-        }
-
-        $tabla .= '<div class="pagination_numbers">';
-
-        for ($i = 1; $i <= $totalPaginas; $i++) {
-            if ($i == $pagina) {
-                $tabla .= '<a href="'.SERVERURL.'gestion/usuarios?pagina='.$i.'" class="number number_active">'.$i.'</a>';
-            } else {
-                $tabla .= '<a href="'.SERVERURL.'gestion/usuarios?pagina='.$i.'" class="number">'.$i.'</a>';
             }
-        }
 
-        $tabla .= '</div>';
+            $tabla .= '<div class="pagination_numbers">';
 
-        if ($pagina < $totalPaginas) {
-            $tabla .= '
+            for ($i = 1; $i <= $totalPaginas; $i++) {
+                if ($i == $pagina) {
+                    $tabla .= '<a href="' . SERVERURL . 'gestion/usuarios?pagina=' . $i . '" class="number number_active">' . $i . '</a>';
+                } else {
+                    $tabla .= '<a href="' . SERVERURL . 'gestion/usuarios?pagina=' . $i . '" class="number">' . $i . '</a>';
+                }
+            }
+
+            $tabla .= '</div>';
+
+            if ($pagina < $totalPaginas) {
+                $tabla .= '
                 <div class="pagination_control pagination_next">
-                    <a href="'.SERVERURL.'gestion/usuarios?pagina='.($pagina + 1).'" class="next">Siguiente</a>
+                    <a href="' . SERVERURL . 'gestion/usuarios?pagina=' . ($pagina + 1) . '" class="next">Siguiente</a>
                 </div>
             ';
-        }
+            }
 
-        $tabla .= '
+            $tabla .= '
             </div>
         </div>
             ';
@@ -133,15 +142,12 @@ class gestionController extends gestionModel{
                 <tr class="tr-tbody_usuarios">
                     <td class="td_usuarios" colspan="8">
                     No hay registros
-                    <a href="'.SERVERURL.'gestion/usuarios?pagina='.(1).'" class="error_registro">Ir a pagina 1</a>
+                    <a href="' . SERVERURL . 'gestion/usuarios?pagina=' . (1) . '" class="error_registro">Ir a pagina 1</a>
                     </td>
                 </tr>
             ';
         }
 
-
-
         return $tabla;
     }
-
 }
