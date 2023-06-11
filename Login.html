@@ -4,6 +4,7 @@
   <title>Inicio de sesión</title>
   <style>
     body {
+      background-color: black;
       display: flex;
       justify-content: center;
       align-items: center;
@@ -12,20 +13,29 @@
     }
     
     .login-container {
-      width: 400px;
-      padding: 20px;
+      width: 30vh;
+      padding: 102px;
       border: 1px solid #3E517A;
       border-radius: 5px;
       background-color: #3E517A;
       text-align: center;
     }
     
-    .logo {
-      margin-bottom: 20px;
-    }
+    .container {
+  display: flex;
+  justify-content: center;
+  height: 19vh; 
+}
+
+.container img {
+  max-width: 90%;
+  max-height: 90%;
+  border-radius: 50%;
+}
     
     .form-group {
-      margin-bottom: 15px;
+      margin-bottom: 19px;
+      width: 100%;
     }
     
     .form-group label {
@@ -36,9 +46,9 @@
     
     .form-group input {
       width: 100%;
-      padding: 5px;
-      border: 1px solid #ccc;
-      border-radius: 3px;
+      padding: 11px;
+      border: 3px solid #ccc;
+      border-radius: 5px;
     }
     
     .captcha-container {
@@ -55,17 +65,17 @@
     }
     
     .login-button {
-      padding: 8px 20px;
+      padding: 13px 40px;
       background-color: #4CAF50;
       border: none;
-      border-radius: 3px;
+      border-radius: 18px;
       color: #fff;
       font-weight: bold;
       cursor: pointer;
     }
     
     .forgot-password {
-      margin-top: 10px;
+      margin-top: 100px;
       text-decoration: none;
       color: #fff;
       font-size: 12px;
@@ -74,12 +84,12 @@
 </head>
 <body>
   <div class="login-container">
-    <div class="logo">
-      <img src="ruta_al_logo.png" alt="Logo">
+    <div class="container">
+      <img src="https://www.designevo.com/res/templates/thumb_small/unique-blue-cross-and-capsule.webp" alt="Logo">
     </div>
     <form>
       <div class="form-group">
-        <label for="username">Usuario:</label>
+        <label for="username">Usuario/Correo:</label>
         <input type="text" id="username" name="username" required>
       </div>
       <div class="form-group">
@@ -95,6 +105,7 @@
       <button type="submit" class="login-button">Ingresar</button>
     </form>
     <a href="#" class="forgot-password">Olvidé mi contraseña</a>
+    <script defer src="https://app.embed.im/snow.js"></script>
   </div>
 </body>
 </html>
