@@ -70,6 +70,7 @@
 
     <?php
     if (!empty($_SESSION['id']) && $viewurl == 'gestion') {
+        echo '<script src="'.SERVERURL.'view/assets/js/export.js"></script>';
         echo '<script src="'.SERVERURL.'view/assets/js/gestion.js"></script>';
     }
     ?>

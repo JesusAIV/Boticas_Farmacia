@@ -1,18 +1,37 @@
 (function () {
+
+    let accion;
+
+
     // Obtener la referencia a la tabla
     var tablaUsuarios = document.getElementById("table_usuarios");
 
-    // Agregar evento de clic a los botones "ver"
-    tablaUsuarios.addEventListener("click", function (event) {
-        if (event.target.classList.contains("accion-ver_usuarios")) {
-            var fila = event.target.closest("tr");
-            var dataId = fila.getAttribute("data-id");
-            obtenerDetalles(dataId);
-        }
+    $(document).ready(function () {
+        // Agregar evento de clic a los botones "ver"
+        tablaUsuarios.addEventListener("click", function (event) {
+            if (event.target.classList.contains("accion-ver_usuarios")) {
+                var fila = event.target.closest("tr");
+                var dataId = fila.getAttribute("data-id");
+                accion = '';
+                accion = 'ver';
+                obtenerDetalles(dataId, accion);
+            } else if (event.target.classList.contains("accion-editar_usuarios")) {
+                var fila = event.target.closest("tr");
+                var dataId = fila.getAttribute("data-id");
+                accion = '';
+                accion = 'editar';
+                obtenerDetalles(dataId, accion);
+            } else if (event.target.classList.contains("accion-eliminar_usuarios")) {
+                var fila = event.target.closest("tr");
+                var dataId = fila.getAttribute("data-id");
+                accion = '';
+                deleteUser(dataId);
+            }
+        });
     });
 
     // Función para obtener los datos del usuario mediante AJAX
-    function obtenerDetalles(id) {
+    function obtenerDetalles(id, accion) {
         const xhr = new XMLHttpRequest();
 
         // Mostrar el spinner antes de enviar la petición
@@ -23,7 +42,8 @@
         xhr.onreadystatechange = function () {
             if (xhr.readyState === 4 && xhr.status === 200) {
                 const datos = JSON.parse(xhr.responseText);
-                mostrarUsuarioModal(datos);
+                mostrarUsuarioModal(datos, accion);
+                crudProducto();
                 // Ocultar el spinner después de recibir la respuesta
                 ocultarSpinner();
             }
@@ -34,9 +54,20 @@
         xhr.send(data);
     }
 
-
     // Función para mostrar los datos del usuario en el modal
-    function mostrarUsuarioModal(user) {
+    function mostrarUsuarioModal(user, accion) {
+
+        var inputReadonly;
+        var titulo;
+
+        if (accion == 'editar') {
+            inputReadonly = false;
+            titulo = 'Editar usuario';
+        } else if (accion == 'ver') {
+            inputReadonly = true;
+            titulo = 'Visualizar usuario';
+        }
+
         // Crear el elemento 'div' con la clase 'modal'
         var modalDiv = document.createElement('div');
         modalDiv.classList.add('modal');
@@ -52,7 +83,7 @@
         // Crear el elemento 'h3' con la clase 'modal-title' y agregar el texto 'Visualizar Usuario'
         var modalTitle = document.createElement('h3');
         modalTitle.classList.add('modal-title');
-        modalTitle.textContent = 'Visualizar Usuario';
+        modalTitle.textContent = titulo;
 
         // Crear el elemento 'button' con la clase 'modal-close' y agregar el texto 'X'
         var modalCloseButton = document.createElement('button');
@@ -68,7 +99,7 @@
             modalInputID.value = '';
             modalInputRol.value = '';
             modalInputNombreUsuario.value = '';
-            modalInputTipoDocumento.value = '';
+            // modalInputTipoDocumento.value = '';
             modalInputNumeroDocumento.value = '';
             modalInputNombre.value = '';
             modalInputApellido.value = '';
@@ -79,6 +110,19 @@
         // Agregar el elemento 'h3' y el elemento 'button' al elemento 'div' con la clase 'modal-header'
         modalHeaderDiv.appendChild(modalTitle);
         modalHeaderDiv.appendChild(modalCloseButton);
+
+        var modalForm = document.createElement('form');
+        modalForm.setAttribute('method', 'POST');
+        modalForm.setAttribute('action', '../view/ajax/gestion.php');
+        modalForm.classList.add('SolicitudAjax');
+
+        if (accion == 'agregar') {
+            modalForm.setAttribute('data-form', 'add');
+        } else if (accion == 'editar') {
+            modalForm.setAttribute('data-form', 'update');
+        }
+
+        modalForm.setAttribute('enctype', 'multipart/form-data');
 
         // Crear el elemento 'div' con la clase 'modal-body'
         var modalBodyDiv = document.createElement('div');
@@ -99,17 +143,42 @@
         modalImgPerfilDiv.classList.add('modal-img-perfil');
 
         var modalImg = document.createElement('img');
-        modalImg.src = 'https://avatars.githubusercontent.com/u/90335295?v=4';
+
+        var rutaImagen = user[0].image;
+        var urlPhp = "../view/";
+        var rutaCompleta = urlPhp ? urlPhp + rutaImagen : rutaImagen;
+        modalImg.src = rutaCompleta;
+
         modalImg.alt = '';
         modalImg.classList.add('modal-img');
 
+        var modalImgEditContainer = document.createElement('div');
+        modalImgEditContainer.classList.add('modal-img-editContainer');
+
+        var labelImgEdit = document.createElement('label');
+        labelImgEdit.classList.add('modal-img-btnEdit');
+        labelImgEdit.textContent = "Seleccionar imagen";
+        labelImgEdit.setAttribute('for', 'inputEditImg');
+
+        var modalImgBtnEdit = document.createElement('input');
+        modalImgBtnEdit.setAttribute('name', 'image');
+        modalImgBtnEdit.id = 'inputEditImg';
+        modalImgBtnEdit.type = 'file';
+        modalImgBtnEdit.style.display = 'none';
+
         var modalInputHidden = document.createElement('input');
+        modalInputHidden.setAttribute('name', 'id');
         modalInputHidden.value = user[0].id;
         modalInputHidden.type = 'hidden';
         modalInputHidden.classList.add('modal-input');
         modalInputHidden.readOnly = true;
 
         modalImgPerfilDiv.appendChild(modalImg);
+        if (accion == 'editar'){
+            modalImgEditContainer.appendChild(labelImgEdit);
+            modalImgEditContainer.appendChild(modalImgBtnEdit);
+            modalImgPerfilDiv.appendChild(modalImgEditContainer);
+        }
         modalBodyInputDiv1.appendChild(modalLabelFoto);
         modalBodyInputDiv1.appendChild(modalImgPerfilDiv);
         modalBodyInputDiv1.appendChild(modalInputHidden);
@@ -126,6 +195,7 @@
         modalLabelID.textContent = 'ID';
 
         var modalInputID = document.createElement('input');
+        modalInputID.setAttribute('name', 'updateUId');
         modalInputID.value = user[0].id;
         modalInputID.type = 'text';
         modalInputID.classList.add('modal-input');
@@ -142,14 +212,55 @@
         modalLabelRol.classList.add('modal-label');
         modalLabelRol.textContent = 'Rol';
 
-        var modalInputRol = document.createElement('input');
-        modalInputRol.value = user[0].rol;
-        modalInputRol.type = 'text';
-        modalInputRol.classList.add('modal-input');
-        modalInputRol.readOnly = true;
+        // var modalInputRol = document.createElement('input');
+        // modalInputRol.value = user[0].rol;
+        // modalInputRol.type = 'text';
+        // modalInputRol.classList.add('modal-input');
+        // modalInputRol.readOnly = inputReadonly;
+
+        // Crear el elemento select
+        let selectRol = document.createElement('select');
+        selectRol.classList.add('modal-input');
+        selectRol.setAttribute('name', 'idRol');
+        selectRol.id = "selectModal";
+        selectRol.disabled = inputReadonly;
+
+        if (accion == 'editar' || accion == 'ver') {
+            idRol = user[0].idRol;
+        }
+
+        fetch('../view/ajax/gestion.php', {
+            method: 'POST',
+            body: new URLSearchParams({
+                action: 'listRol'
+            })
+        })
+            .then(response => response.json())
+            .then(data => {
+                // Generar las opciones del select
+                data.forEach(opcion => {
+                    let optionRol = document.createElement('option');
+                    optionRol.textContent = opcion.rol;
+                    optionRol.value = opcion.id;
+                    selectRol.appendChild(optionRol);
+                });
+
+                if (accion == 'editar' || accion == 'ver') {
+                    obtenerDatosRol(idRol).then(function (datosRol) {
+                        let selectElement = document.getElementById('selectModal');
+                        for (let i = 0; i < selectElement.options.length; i++) {
+                            if (selectElement.options[i].value == datosRol[0].id) {
+                                selectElement.selectedIndex = i;
+                                break;
+                            }
+                        }
+                    });
+                }
+            })
+            .catch(error => console.error(error));
 
         modalBodyInputDiv3.appendChild(modalLabelRol);
-        modalBodyInputDiv3.appendChild(modalInputRol);
+        modalBodyInputDiv3.appendChild(selectRol);
         modalBodyInputGrid.appendChild(modalBodyInputDiv3);
 
         var modalBodyInputDiv4 = document.createElement('div');
@@ -160,10 +271,11 @@
         modalLabelNombreUsuario.textContent = 'Nombre de usuario';
 
         var modalInputNombreUsuario = document.createElement('input');
+        modalInputNombreUsuario.setAttribute('name', 'userName');
         modalInputNombreUsuario.value = user[0].userName;
         modalInputNombreUsuario.type = 'text';
         modalInputNombreUsuario.classList.add('modal-input');
-        modalInputNombreUsuario.readOnly = true;
+        modalInputNombreUsuario.readOnly = inputReadonly;
 
         modalBodyInputDiv4.appendChild(modalLabelNombreUsuario);
         modalBodyInputDiv4.appendChild(modalInputNombreUsuario);
@@ -182,14 +294,55 @@
         modalLabelTipoDocumento.classList.add('modal-label');
         modalLabelTipoDocumento.textContent = 'Tipo de documento';
 
-        var modalInputTipoDocumento = document.createElement('input');
-        modalInputTipoDocumento.value = user[0].typeDoc + ' (' + user[0].abbreviation + ')';
-        modalInputTipoDocumento.type = 'text';
-        modalInputTipoDocumento.classList.add('modal-input');
-        modalInputTipoDocumento.readOnly = true;
+        // var modalInputTipoDocumento = document.createElement('input');
+        // modalInputTipoDocumento.value = user[0].typeDoc + ' (' + user[0].abbreviation + ')';
+        // modalInputTipoDocumento.type = 'text';
+        // modalInputTipoDocumento.classList.add('modal-input');
+        // modalInputTipoDocumento.readOnly = inputReadonly;
+
+        // Crear el elemento select
+        let selectTypeDoc = document.createElement('select');
+        selectTypeDoc.classList.add('modal-input');
+        selectTypeDoc.setAttribute('name', 'idTypeDoc');
+        selectTypeDoc.id = "selectModaltypeDoc";
+        selectTypeDoc.disabled = inputReadonly;
+
+        if (accion == 'editar' || accion == 'ver') {
+            idTypeDoc = user[0].idTypeDoc;
+        }
+
+        fetch('../view/ajax/gestion.php', {
+            method: 'POST',
+            body: new URLSearchParams({
+                action: 'listTypeDoc'
+            })
+        })
+            .then(response => response.json())
+            .then(data => {
+                // Generar las opciones del select
+                data.forEach(opcion => {
+                    let optiontypeDoc = document.createElement('option');
+                    optiontypeDoc.textContent = opcion.typeDoc;
+                    optiontypeDoc.value = opcion.id;
+                    selectTypeDoc.appendChild(optiontypeDoc);
+                });
+
+                if (accion == 'editar' || accion == 'ver') {
+                    obtenerDatosTypeDoc(idTypeDoc).then(function (datostypeDoc) {
+                        let selectElement = document.getElementById('selectModaltypeDoc');
+                        for (let i = 0; i < selectElement.options.length; i++) {
+                            if (selectElement.options[i].value == datostypeDoc[0].id) {
+                                selectElement.selectedIndex = i;
+                                break;
+                            }
+                        }
+                    });
+                }
+            })
+            .catch(error => console.error(error));
 
         modalBodyInputDiv5.appendChild(modalLabelTipoDocumento);
-        modalBodyInputDiv5.appendChild(modalInputTipoDocumento);
+        modalBodyInputDiv5.appendChild(selectTypeDoc);
         modalBodyContentDiv2.appendChild(modalBodyInputDiv5);
 
         var modalBodyInputDiv6 = document.createElement('div');
@@ -200,10 +353,11 @@
         modalLabelNumeroDocumento.textContent = 'Número de documento';
 
         var modalInputNumeroDocumento = document.createElement('input');
+        modalInputNumeroDocumento.setAttribute('name', 'numDoc');
         modalInputNumeroDocumento.value = user[0].numDoc;
         modalInputNumeroDocumento.type = 'text';
         modalInputNumeroDocumento.classList.add('modal-input');
-        modalInputNumeroDocumento.readOnly = true;
+        modalInputNumeroDocumento.readOnly = inputReadonly;
 
         modalBodyInputDiv6.appendChild(modalLabelNumeroDocumento);
         modalBodyInputDiv6.appendChild(modalInputNumeroDocumento);
@@ -222,10 +376,11 @@
         modalLabelNombre.textContent = 'Nombre';
 
         var modalInputNombre = document.createElement('input');
+        modalInputNombre.setAttribute('name', 'name');
         modalInputNombre.value = user[0].name;
         modalInputNombre.type = 'text';
         modalInputNombre.classList.add('modal-input');
-        modalInputNombre.readOnly = true;
+        modalInputNombre.readOnly = inputReadonly;
 
         modalBodyInputDiv7.appendChild(modalLabelNombre);
         modalBodyInputDiv7.appendChild(modalInputNombre);
@@ -239,10 +394,11 @@
         modalLabelApellido.textContent = 'Apellido';
 
         var modalInputApellido = document.createElement('input');
+        modalInputApellido.setAttribute('name', 'lastName');
         modalInputApellido.value = user[0].lastName;
         modalInputApellido.type = 'text';
         modalInputApellido.classList.add('modal-input');
-        modalInputApellido.readOnly = true;
+        modalInputApellido.readOnly = inputReadonly;
 
         modalBodyInputDiv8.appendChild(modalLabelApellido);
         modalBodyInputDiv8.appendChild(modalInputApellido);
@@ -261,10 +417,11 @@
         modalLabelCorreo.textContent = 'Correo';
 
         var modalInputCorreo = document.createElement('input');
+        modalInputCorreo.setAttribute('name', 'email');
         modalInputCorreo.value = user[0].email;
         modalInputCorreo.type = 'text';
         modalInputCorreo.classList.add('modal-input');
-        modalInputCorreo.readOnly = true;
+        modalInputCorreo.readOnly = inputReadonly;
 
         modalBodyInputDiv9.appendChild(modalLabelCorreo);
         modalBodyInputDiv9.appendChild(modalInputCorreo);
@@ -278,10 +435,11 @@
         modalLabelTelefono.textContent = 'Teléfono';
 
         var modalInputTelefono = document.createElement('input');
+        modalInputTelefono.setAttribute('name', 'telephone');
         modalInputTelefono.value = user[0].telephone;
         modalInputTelefono.type = 'text';
         modalInputTelefono.classList.add('modal-input');
-        modalInputTelefono.readOnly = true;
+        modalInputTelefono.readOnly = inputReadonly;
 
         modalBodyInputDiv10.appendChild(modalLabelTelefono);
         modalBodyInputDiv10.appendChild(modalInputTelefono);
@@ -289,12 +447,33 @@
 
         modalBodyDiv.appendChild(modalBodyContentDiv4);
 
+        var respuestaAjax = document.createElement('div');
+        respuestaAjax.classList.add('RespuestaAjax');
+
+        // Crear el elemento 'div' con la clase 'modal-footer'
+        var modalFooterDiv = document.createElement('div');
+        modalFooterDiv.classList.add('modal-footer');
+
+        // Crear elemento 'button' con la clase 'btn-save-user'
+        var modalFooterButton = document.createElement('button');
+        modalFooterButton.classList.add('btn-save-user');
+        modalFooterButton.textContent = "Guardar";
+
+        // Agregar el elemento 'button' con la clase 'btn-save-user' al elemento 'div' con la clase 'modal-footer'
+        modalFooterDiv.appendChild(modalFooterButton);
+
         // Agregar el elemento 'div' con la clase 'modal-header' al elemento 'div' con la clase 'modal-content'
         modalContentDiv.appendChild(modalHeaderDiv);
 
         // Agregar el elemento 'div' con la clase 'modal-body' al elemento 'div' con la clase 'modal-content'
-        modalContentDiv.appendChild(modalBodyDiv);
+        modalForm.appendChild(respuestaAjax);
+        modalForm.appendChild(modalBodyDiv);
 
+        if (accion == 'editar') {
+            // Agregar el elemento 'div' con la clase 'modal-footer' al elemento 'div' con la clase 'modal-content'
+            modalForm.appendChild(modalFooterDiv);
+        }
+        modalContentDiv.appendChild(modalForm);
         // Agregar el elemento 'div' con la clase 'modal-content' al elemento 'div' con la clase 'modal'
         modalDiv.appendChild(modalContentDiv);
 
@@ -303,22 +482,33 @@
 
     }
 
-    function mostrarSpinner() {
-        const spinnerOverlay = document.createElement('div');
-        spinnerOverlay.id = 'loading-spinner';
-        spinnerOverlay.className = 'spinner-overlay';
-
-        const spinner = document.createElement('div');
-        spinner.id = 'spinner';
-        spinner.className = 'spinner';
-
-        spinnerOverlay.appendChild(spinner);
-        document.body.appendChild(spinnerOverlay);
-    }
-
-    function ocultarSpinner() {
-        const spinnerOverlay = document.getElementById('loading-spinner');
-        document.body.removeChild(spinnerOverlay);
+    //
+    function deleteUser(idUser) {
+        var respuesta = document.querySelector('.respuestaDelete');
+        showAlertModal(
+            '¿Seguro que desea eliminar?',
+            'Verifique bien los datos antes de confirmar',
+            'warning',
+            true,
+            0,
+            function (confirmado) {
+                if (confirmado) {
+                    mostrarSpinner()
+                    $.ajax({
+                        type: "POST",
+                        url: "../view/ajax/gestion.php",
+                        data: {
+                            id: idUser,
+                            action: 'deleteUser'
+                        },
+                        success: function (data) {
+                            ocultarSpinner()
+                            respuesta.innerHTML = data;
+                        }
+                    });
+                }
+            }
+        );
     }
 
 })();

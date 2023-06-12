@@ -73,4 +73,90 @@ class gestionModel extends mainModel
         return $row['totalUsers'];
     }
 
+    /**
+     * Funcion para listar los roles de los usuarios
+     */
+    protected function ListRolM()
+    {
+        $conexion = Connection::connect();
+
+        $sql = "CALL SelectRolGestion()";
+        $result = $conexion->query($sql);
+
+        return $result;
+    }
+
+    /**
+     *
+     */
+    protected function ListTypeDocM(){
+        $conexion = Connection::connect();
+
+        $sql = "CALL SelectTypeDoc()";
+        $result = $conexion->query($sql);
+
+        return $result;
+    }
+
+    /**
+     *
+     */
+    public function rolByIdM($idRol)
+    {
+        $conexion = Connection::connect();
+
+        $sql = "CALL RolById($idRol)";
+        $result = $conexion->query($sql);
+
+        return $result;
+    }
+
+    /**
+     *
+     */
+    public function typeDocByIdM($idTypeDoc)
+    {
+        $conexion = Connection::connect();
+
+        $sql = "CALL TypeDocById($idTypeDoc)";
+        $result = $conexion->query($sql);
+
+        return $result;
+    }
+
+    /**
+     *
+     */
+    protected function updateUserM($datosU){
+        $conexion = Connection::connect();
+
+        $p_id = $datosU['id'];
+        $p_idRol = $datosU['idRol'];
+        $p_userName = $datosU['userName'];
+        $p_idTypeDoc = $datosU['idTypeDoc'];
+        $p_numDoc = $datosU['numDoc'];
+        $p_name = $datosU['name'];
+        $p_lastName = $datosU['lastName'];
+        $p_email = $datosU['email'];
+        $p_telephone = $datosU['telephone'];
+        $p_image = $datosU['image'];
+
+        $sql = "CALL UpdateUser($p_id, $p_idRol, '$p_userName', $p_idTypeDoc, '$p_numDoc', '$p_name', '$p_lastName', '$p_email', '$p_telephone', '$p_image')";
+
+        $result = $conexion->query($sql);
+
+        return $result;
+    }
+
+    protected function deleteUserByIdM($idUser){
+        $conexion = Connection::connect();
+
+
+        $sql = "CALL DeleteUserById($idUser)";
+
+        $result = $conexion->query($sql);
+
+        return $result;
+    }
+
 }
