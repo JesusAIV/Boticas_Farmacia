@@ -1,5 +1,5 @@
 <?php
-    require_once  "./models/viewModel.php";
+    require_once  "./model/viewmodel.php";
 
     class viewController extends viewModel
     {

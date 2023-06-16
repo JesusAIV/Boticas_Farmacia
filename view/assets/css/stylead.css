@@ -5,7 +5,7 @@
     --first-color-light: #FFFFFF;
     --white-color: #3E517A;
     --body-font:
-    'Nunito', sans-serif;
+        'Nunito', sans-serif;
     --normal-font-size: 1rem;
     --z-fixed: 100;
 }
@@ -185,17 +185,19 @@ a {
         padding-left: calc(var(--nav-width) + 188px);
     }
 }
+
 .box {
-        width: 100%;
-        height: 100%;
-        display: flex;
-        align-items: center;
-        justify-content: center;
-        background-color: #d9d9d9;
-        border-radius: 25px;
-        margin-bottom: 20px;
-    }
-.container-main{
+    width: 100%;
+    height: 100%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    background-color: #d9d9d9;
+    border-radius: 25px;
+    margin-bottom: 20px;
+}
+
+.container-main {
     height: 100vh;
     display: grid;
     grid-template-rows: 0.5fr 1fr;
@@ -215,6 +217,37 @@ a {
     height: 80%;
     background-color: #e08e45;
     border-radius: 25px;
+}
+
+.bienvenida-img {
+    width: 80px;
+    height: 80px;
+    border-radius: 50%;
+    overflow: hidden;
+}
+
+.bienvenida-img img {
+    width: 100%;
+}
+
+.box-Bienvenido {
+    display: flex;
+    align-items: center;
+    gap: 20px;
+    padding-left: 20px;
+}
+
+.bienvenida-contenname {
+    color: #FFFFFF;
+}
+
+.bienvenida-name {
+    font-size: 1.7rem;
+    font-weight: 600;
+}
+
+.bienvenida-rol {
+    font-size: 1.2rem;
 }
 
 .container-almacen {
@@ -237,7 +270,7 @@ a {
     border: none;
 }
 
-.btn-small{
+.btn-small {
     padding: 10px 6px;
     font-size: 10px;
 }
@@ -283,29 +316,33 @@ a {
     padding: 10px 5px;
 }
 
-.dash-bottom{
+.dash-bottom {
     display: grid;
     grid-template-columns: auto auto auto;
     gap: 10px;
 }
-.panel{
+
+.panel {
     margin-top: 5px;
     /* height: 100%; */
     display: grid;
     grid-template-rows: auto 1fr;
 }
-.panel-body{
+
+.panel-body {
     background-color: #d9d9d9;
     border-radius: 25px;
     padding: 15px;
 }
-.titulo-panel{
+
+.titulo-panel {
     text-align: center;
     font-size: 15px;
     font-weight: 600;
     margin-bottom: 10px;
 }
-.panel-acciones{
+
+.panel-acciones {
     margin-top: 10px;
     width: 100%;
     display: flex;
@@ -313,6 +350,256 @@ a {
     justify-content: center;
     gap: 0px 10px;
 }
+
 .panel-grafico {
     height: 85%;
+}
+
+/* Pagina gestion usuarios */
+.container-table {
+    width: 90%;
+    margin: 0 auto;
+}
+
+.table {
+    width: 100%;
+}
+
+thead.thead_usuarios {
+    background-color: var(--white-color);
+    color: var(--first-color-light);
+    width: 100%;
+    border-bottom: 5px solid #FFFFFF;
+}
+
+tr.tr-thead_usuarios {
+    width: 100%;
+}
+
+th.th_usuarios {
+    padding: 6px;
+}
+
+table.table_usuarios {
+    width: 100%;
+    border-collapse: collapse;
+    border-radius: 10px;
+    overflow: hidden;
+}
+
+tr.tr-tbody_usuarios {
+    border-bottom: 1px solid;
+}
+
+tbody.tbody_usuarios {
+    background-color: var(--first-color);
+    color: var(--first-color-light);
+    width: 100%;
+}
+
+td.td_usuarios {
+    padding: 8px;
+    text-align: center;
+    /* border: 1px solid; */
+    height: 100%;
+}
+
+td.td-acciones_usuarios {
+    display: flex;
+    align-items: center;
+    height: 100%;
+    gap: 10px;
+    color: #FFFFFF;
+}
+
+button.accion {
+    padding: 9px;
+    border-radius: 10px;
+    border: none;
+    outline: none;
+    cursor: pointer;
+    color: #FFFFFF;
+    font-weight: 700;
+}
+
+button.accion-ver_usuarios {
+    background-color: #F1C40F;
+}
+
+button.accion-editar_usuarios {
+    background-color: #2ECC71;
+}
+
+button.accion-eliminar_usuarios {
+    background-color: #E74C3C;
+}
+
+.container_pagination {
+    margin-top: 15px;
+    width: 100%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.pagination {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+}
+
+a.previous {}
+
+.pagination_control {
+    padding: 10px;
+    background-color: var(--white-color);
+    color: #FFFFFF;
+    border-radius: 10px;
+}
+
+.pagination_control a {
+    color: #FFFFFF;
+}
+
+.pagination_numbers {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+}
+
+a.number {
+    padding: 10px;
+    background-color: var(--white-color);
+    color: #FFFFFF;
+    border-radius: 10px;
+}
+
+a.number_active,
+a.number:hover {
+    background-color: var(--first-color);
+}
+
+a.error_registro {
+    background-color: #34495E;
+    padding: 5px;
+    color: #FFFFFF;
+    border-radius: 6px;
+}
+
+/* Modal */
+.modal {
+    position: fixed;
+    z-index: 150;
+    left: 0;
+    top: 0;
+    width: 100%;
+    height: 100%;
+    overflow: auto;
+    background-color: rgba(0, 0, 0, 0.5);
+}
+
+.modal-content {
+    background-color: #fefefe;
+    margin: 2% auto;
+    border: 1px solid #888;
+    width: 80%;
+    max-width: 600px;
+    border-radius: 20px;
+}
+
+.modal-header {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    padding: 20px;
+    border-bottom: 1px solid;
+}
+
+.modal-body {
+    width: 100%;
+    padding: 5px 20px;
+}
+
+.modal-body-content {
+    display: grid;
+    grid-template-columns: repeat(2, 1fr);
+    gap: 35px;
+    /* padding: 10px 0; */
+}
+
+.modal-body-input {
+    display: flex;
+    flex-direction: column;
+    padding: 10px 0;
+    justify-content: center;
+}
+
+input.modal-input {
+    padding: 5px;
+    outline: none;
+    border-radius: 10px;
+    border: 1px solid;
+}
+
+button.modal-close {
+    font-weight: 800;
+    border-radius: 9px;
+    border: none;
+    background: transparent;
+    font-size: 1.2rem;
+    cursor: pointer;
+}
+
+.modal-img-perfil {
+    width: 100%;
+    /* height: 50px; */
+    /* border-radius: 50%; */
+    /* overflow: hidden; */
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+img.modal-img {
+    width: 155px;
+    border-radius: 50%;
+    border: 1px solid;
+}
+
+label.modal-label-foto {
+    text-align: center;
+    margin-bottom: 5px;
+}
+
+.spinner-overlay {
+    position: fixed;
+    z-index: 9999;
+    left: 0;
+    top: 0;
+    width: 100%;
+    height: 100%;
+    background-color: rgba(0, 0, 0, 0.5);
+}
+
+.spinner {
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    width: 50px;
+    height: 50px;
+    border: 4px solid #f3f3f3;
+    border-top: 4px solid #3498db;
+    border-radius: 50%;
+    animation: spin 2s linear infinite;
+    transform: translate(-50%, -50%);
+}
+
+@keyframes spin {
+    0% {
+        transform: rotate(0deg);
+    }
+
+    100% {
+        transform: rotate(360deg);
+    }
 }
