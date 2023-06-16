@@ -26,7 +26,7 @@
                     },
                     title: {
                         display: true,
-                        text: 'Cantidad de productos por categoría'
+                        text: ''
                     }
                 },
                 responsive: true,
@@ -68,7 +68,7 @@
                     },
                     title: {
                         display: true,
-                        text: 'Cantidad de productos por categoría'
+                        text: ''
                     }
                 },
                 responsive: true,
@@ -110,7 +110,7 @@
                     },
                     title: {
                         display: true,
-                        text: 'Cantidad de productos por categoría'
+                        text: ''
                     }
                 },
                 responsive: true,
