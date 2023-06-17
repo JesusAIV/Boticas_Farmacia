@@ -45,7 +45,7 @@ class gestionController extends gestionModel
     public function paginationUsers($idUser)
     {
         $pagina = isset($_GET['pagina']) ? $_GET['pagina'] : 1;
-        $cantidad = 10;
+        $cantidad = 8;
 
         $totalRegistros = gestionModel::contarUsuariosM($idUser);
         $totalPaginas = ceil($totalRegistros / $cantidad);
@@ -100,6 +100,7 @@ class gestionController extends gestionModel
             $tabla .= '
                 </tbody>
             </table>
+            <div class="respuestaDelete"></div>
         </div>
         <div class="container_pagination">
             <div class="pagination">
@@ -149,5 +150,259 @@ class gestionController extends gestionModel
         }
 
         return $tabla;
+    }
+
+    /**
+     *
+     */
+    public function ListRolC()
+    {
+        $datos = gestionModel::ListRolM();
+
+        $mData = array();
+
+        foreach ($datos as $row) {
+            $data = [
+                "id" => $row['id'],
+                "rol" => $row['rol']
+            ];
+            $mData[] = $data;
+        }
+
+        $data = json_encode($mData, JSON_UNESCAPED_UNICODE);
+
+        return $data;
+    }
+
+    /**
+     *
+     */
+    public function ListTypeDocC()
+    {
+        $datos = gestionModel::ListTypeDocM();
+
+        $mData = array();
+
+        foreach ($datos as $row) {
+            $data = [
+                "id" => $row['id'],
+                "typeDoc" => $row['typeDoc']
+            ];
+            $mData[] = $data;
+        }
+
+        $data = json_encode($mData, JSON_UNESCAPED_UNICODE);
+
+        return $data;
+    }
+
+    /**
+     *
+     */
+    public function rolByIdC($idRol)
+    {
+        $datos = gestionModel::rolByIdM($idRol);
+
+        $datos = $datos->fetch_all(MYSQLI_ASSOC);
+
+        $data = json_encode($datos, JSON_UNESCAPED_UNICODE);
+
+        return $data;
+    }
+
+    /**
+     * 
+     */
+    public function typeDocByIdC($idTypeDoc)
+    {
+        $datos = gestionModel::typeDocByIdM($idTypeDoc);
+
+        $datos = $datos->fetch_all(MYSQLI_ASSOC);
+
+        $data = json_encode($datos, JSON_UNESCAPED_UNICODE);
+
+        return $data;
+    }
+
+    /**
+     *
+     */
+    public function actualizarUsuarioC()
+    {
+        $id = $_POST['id'];
+        $idRol = $_POST['idRol'];
+        $userName = $_POST['userName'];
+        $idTypeDoc = $_POST['idTypeDoc'];
+        $numDoc = $_POST['numDoc'];
+        $name = $_POST['name'];
+        $lastName = $_POST['lastName'];
+        $email = $_POST['email'];
+        $telephone = $_POST['telephone'];
+
+        $datosId = $this->userByIdC($id);
+        $image = "";
+
+        foreach ($datosId as $user) {}
+
+        if ($_FILES['image']['name']) {
+            $dir = "../assets/img/perfil/";
+            $nombreArchivo = $_FILES['image']['name'];
+            $tipo = $_FILES['image']['type'];
+            $tipo = strtolower($tipo);
+            $extension = substr($tipo, strpos($tipo, '/') + 1);
+
+            // Generar un nuevo nombre para el archivo
+            $nuevoNombreArchivo = $userName . '-' . $id . '.' . $extension;
+
+            if (!is_dir($dir)) {
+                mkdir($dir, 0777, true);
+            }
+
+            move_uploaded_file($_FILES['image']['tmp_name'], $dir . $nuevoNombreArchivo);
+
+            $directorio = $dir . $nuevoNombreArchivo;
+
+            $image = substr($directorio, 3);
+        } else {
+            $image = $user['image'];
+        }
+
+        $datosU = [
+            "id" => $id,
+            "idRol" => $idRol,
+            "userName" => $userName,
+            "idTypeDoc" => $idTypeDoc,
+            "numDoc" => $numDoc,
+            "name" => $name,
+            "lastName" => $lastName,
+            "email" => $email,
+            "telephone" => $telephone,
+            "image" => $image
+        ];
+
+        // Ejecuta la función agregarPersonal obteniendo el array de datos
+        $addProducto = gestionModel::updateUserM($datosU);
+
+        if ($addProducto >= 1) { /* Si la consulta se ejecuta correctamente */
+            // Dará una alerta de éxito
+            $alerta = [
+                "Alerta" => "simple",
+                "Titulo" => "Usuario actualizado",
+                "Texto" => "El usuario se actualizó correctamente en el sistema",
+                "Tipo" => "success"
+            ];
+        } else {
+            // Dará una alerta de error
+            $alerta = [
+                "Alerta" => "simple",
+                "Titulo" => "Ocurrio un error inesperado",
+                "Texto" => "No hemos podido actualizar al usuario",
+                "Tipo" => "error"
+            ];
+        }
+
+        return mainModel::alert($alerta);
+    }
+
+    public function deleteUserByIdC()
+    {
+        $id = $_POST['id'];
+
+        $delete = gestionModel::deleteUserByIdM($id);
+
+        if ($delete >= 1) { /* Si la consulta se ejecuta correctamente */
+            // Dará una alerta de éxito
+            $alerta = [
+                "Alerta" => "simple",
+                "Titulo" => "Usuario eliminado",
+                "Texto" => "El usuario se eliminó correctamente en el sistema",
+                "Tipo" => "success"
+            ];
+        } else {
+            // Dará una alerta de error
+            $alerta = [
+                "Alerta" => "simple",
+                "Titulo" => "Ocurrio un error inesperado",
+                "Texto" => "No hemos podido eliminar al usuario",
+                "Tipo" => "error"
+            ];
+        }
+
+        return mainModel::alert($alerta);
+    }
+
+    public function validarNumDoc()
+    {
+        $numDoc = strval($_POST['numDoc']);
+
+        if (strlen($numDoc) == 8) {
+            $validaDni = mainModel::validarDni($numDoc);
+            return $validaDni;
+        } else if (strlen($numDoc) == 11) {
+            $validaRuc = mainModel::validarRuc($numDoc);
+            return $validaRuc;
+        } else {
+            $alerta = [
+                "Alerta" => "simple",
+                "Titulo" => "Número no valido",
+                "Texto" => "Cantidad de dígitos no valido",
+                "Tipo" => "error"
+            ];
+
+            return mainModel::alert($alerta);
+        }
+    }
+
+    public function crearUsuarioC()
+    {
+        $conexion = Connection::connect();
+
+        $idRol = $_POST['idRol'];
+        $idTypeDoc = $_POST['idTypeDoc'];
+        $numDoc = $_POST['numDoc'];
+        $name = $_POST['name'];
+        $lastName = $_POST['lastName'];
+        $email = $_POST['email'];
+        $telephone = $_POST['telephone'];
+
+        $image = "assets/img/perfil/sin-fotografia.png";
+        $userName = mainModel::generateUserName($name, $lastName, $numDoc);
+        $password = mainModel::encryptePass($_POST['numDoc']);
+
+        $datosU = [
+            "idRol" => $idRol,
+            "idTypeDoc" => $idTypeDoc,
+            "numDoc" => $numDoc,
+            "name" => $name,
+            "lastName" => $lastName,
+            "email" => $email,
+            "userName" => $userName,
+            "password" => $password,
+            "image" => $image,
+            "telephone" => $telephone
+        ];
+
+        // Ejecuta la función agregarPersonal obteniendo el array de datos
+        $addProducto = gestionModel::createUserM($datosU);
+
+        if ($addProducto >= 1) { /* Si la consulta se ejecuta correctamente */
+            // Dará una alerta de éxito
+            $alerta = [
+                "Alerta" => "simple",
+                "Titulo" => "Usuario agregado",
+                "Texto" => "El usuario se agregó correctamente en el sistema",
+                "Tipo" => "success"
+            ];
+        } else {
+            // Dará una alerta de error
+            $alerta = [
+                "Alerta" => "simple",
+                "Titulo" => "Ocurrio un error inesperado",
+                "Texto" => "No hemos podido agregar al usuario",
+                "Tipo" => "error"
+            ];
+        }
+
+        return mainModel::alert($alerta);
     }
 }
