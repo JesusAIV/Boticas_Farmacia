@@ -167,7 +167,7 @@ function crudProducto() {
         var titleAlerta;
         var textoAlerta;
         if (tipo === "add") {
-            titleAlerta = "¿Seguro que desea editar?";
+            titleAlerta = "¿Seguro que desea agregar?";
             textoAlerta = "Verifique bien los datos antes de confirmar";
         } else if (tipo == "delete") {
             titleAlerta = "¿Seguro que desea eliminar?";
@@ -205,4 +205,37 @@ function crudProducto() {
             }
         );
     });
+}
+
+function imagenPrevia(){
+    $("#inputEditImg").change(function () {
+        var img = this.files[0];
+
+        if (img["type"] != "image/jpeg" && img["type"] != "image/png") {
+
+            $("#inputEditImg").val("");
+            $("#viewImg").attr("src", "../view/assets/img/perfil/sin-fotografia.png");
+            showAlertModal('Formato no valido', 'El formato de la imagen no es valido', 'error', false, 2000, null);
+
+        } else if (Number(img["size"]) > 2000000) {
+            $("#inputEditImg").val("");
+            $("#viewImg").attr("src", "../view/assets/img/perfil/sin-fotografia.png");
+            showAlertModal('Tamaño de excedido', 'El tamaño de la imagen es mayor a lo debido', 'error', false, 2000, null);
+
+
+        } else {
+
+            var imagen = new FileReader;
+            imagen.readAsDataURL(img);
+
+            $(imagen).on("load", function (event) {
+
+                var rutaImagen = event.target.result;
+                $("#viewImg").attr("src", rutaImagen);
+
+            })
+
+        }
+
+    })
 }

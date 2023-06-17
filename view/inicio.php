@@ -26,8 +26,10 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title><?php echo NAME ?></title>
     <script src="https://code.jquery.com/jquery-3.7.0.min.js"></script>
+    <link rel="stylesheet" type="text/css" href="<?php echo SERVERURL ?>view/assets/css/stylead.css">
     <?php
-        if (!empty($_SESSION['id']) && $viewurl == 'gestion') {
+        // if (!empty($_SESSION['id']) && $viewurl == 'gestion') {
+        if ($viewurl != 'gestion') {
             echo '<link rel="stylesheet" type="text/css" href="'.SERVERURL.'view/assets/css/stylead.css">';
             // echo '<script src="'.SERVERURL.'view/assets/js/graficos.js"></script>';
             // echo '<script src="'.SERVERURL.'view/assets/js/gestion.js"></script>';
@@ -74,6 +76,6 @@
         echo '<script src="'.SERVERURL.'view/assets/js/gestion.js"></script>';
     }
     ?>
-
+<script src="<?php echo SERVERURL ?>view/assets/js/modal.js"></script>
 </body>
 </html>

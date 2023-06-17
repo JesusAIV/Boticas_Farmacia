@@ -29,8 +29,13 @@ if (!empty($_POST['action'])) {
     if ($_POST['action'] == 'deleteUser') {
         echo $gestion->deleteUserByIdC();
     }
+    if ($_POST['action'] == 'verifyNumDoc') {
+        echo $gestion->validarNumDoc();
+    }
 } else {
     if (isset($_POST['updateUId'])) {
         echo $gestion->actualizarUsuarioC();
+    } elseif (isset($_POST['adduser'])) {
+        echo $gestion->crearUsuarioC();
     }
 }

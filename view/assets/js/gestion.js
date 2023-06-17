@@ -7,7 +7,18 @@
     var tablaUsuarios = document.getElementById("table_usuarios");
 
     $(document).ready(function () {
-        // Agregar evento de clic a los botones "ver"
+        imagenPrevia();
+
+        document.querySelector('.btn-accion-add').addEventListener("click", () => {
+            accion = '';
+            accion = 'agregar';
+            dataId = null
+            obtenerDetalles(dataId, accion);
+        })
+
+    });
+
+    if (tablaUsuarios != null) {
         tablaUsuarios.addEventListener("click", function (event) {
             if (event.target.classList.contains("accion-ver_usuarios")) {
                 var fila = event.target.closest("tr");
@@ -28,7 +39,7 @@
                 deleteUser(dataId);
             }
         });
-    });
+    }
 
     // Función para obtener los datos del usuario mediante AJAX
     function obtenerDetalles(id, accion) {
@@ -66,6 +77,9 @@
         } else if (accion == 'ver') {
             inputReadonly = true;
             titulo = 'Visualizar usuario';
+        } else if (accion == 'agregar') {
+            inputReadonly = false;
+            titulo = 'Agregar usuario';
         }
 
         // Crear el elemento 'div' con la clase 'modal'
@@ -90,23 +104,6 @@
         modalCloseButton.classList.add('modal-close');
         modalCloseButton.textContent = 'X';
 
-        // Agregar un controlador de eventos para cerrar el modal y reiniciar los valores
-        modalCloseButton.addEventListener('click', function () {
-            // Eliminar el modal del DOM
-            modalDiv.remove();
-
-            // Reiniciar los valores de los campos de entrada
-            modalInputID.value = '';
-            modalInputRol.value = '';
-            modalInputNombreUsuario.value = '';
-            // modalInputTipoDocumento.value = '';
-            modalInputNumeroDocumento.value = '';
-            modalInputNombre.value = '';
-            modalInputApellido.value = '';
-            modalInputCorreo.value = '';
-            modalInputTelefono.value = '';
-        });
-
         // Agregar el elemento 'h3' y el elemento 'button' al elemento 'div' con la clase 'modal-header'
         modalHeaderDiv.appendChild(modalTitle);
         modalHeaderDiv.appendChild(modalCloseButton);
@@ -115,6 +112,7 @@
         modalForm.setAttribute('method', 'POST');
         modalForm.setAttribute('action', '../view/ajax/gestion.php');
         modalForm.classList.add('SolicitudAjax');
+        modalForm.id = 'formDatos';
 
         if (accion == 'agregar') {
             modalForm.setAttribute('data-form', 'add');
@@ -143,11 +141,20 @@
         modalImgPerfilDiv.classList.add('modal-img-perfil');
 
         var modalImg = document.createElement('img');
+        modalImg.id = 'viewImg';
 
-        var rutaImagen = user[0].image;
-        var urlPhp = "../view/";
-        var rutaCompleta = urlPhp ? urlPhp + rutaImagen : rutaImagen;
-        modalImg.src = rutaCompleta;
+        if (accion != 'agregar') {
+            var rutaImagen = user[0].image;
+            var urlPhp = "../view/";
+            var rutaCompleta = urlPhp ? urlPhp + rutaImagen : rutaImagen;
+            modalImg.src = rutaCompleta;
+        } else {
+            $(document).ready(function () {
+                imagenPrevia();
+            });
+            modalImg.src = '../view/assets/img/perfil/sin-fotografia.png';
+        }
+
 
         modalImg.alt = '';
         modalImg.classList.add('modal-img');
@@ -162,7 +169,7 @@
 
         var modalImgBtnEdit = document.createElement('input');
         modalImgBtnEdit.setAttribute('name', 'image');
-        modalImgBtnEdit.id = 'inputEditImg';
+        modalImgBtnEdit.id = accion == 'inputEditImg';
         modalImgBtnEdit.type = 'file';
         modalImgBtnEdit.style.display = 'none';
 
@@ -174,7 +181,7 @@
         modalInputHidden.readOnly = true;
 
         modalImgPerfilDiv.appendChild(modalImg);
-        if (accion == 'editar'){
+        if (accion == 'editar' || accion == 'agregar') {
             modalImgEditContainer.appendChild(labelImgEdit);
             modalImgEditContainer.appendChild(modalImgBtnEdit);
             modalImgPerfilDiv.appendChild(modalImgEditContainer);
@@ -182,28 +189,32 @@
         modalBodyInputDiv1.appendChild(modalLabelFoto);
         modalBodyInputDiv1.appendChild(modalImgPerfilDiv);
         modalBodyInputDiv1.appendChild(modalInputHidden);
-        modalBodyContentDiv1.appendChild(modalBodyInputDiv1);
+        if (accion == 'ver') {
+            modalBodyContentDiv1.appendChild(modalBodyInputDiv1);
+        }
 
         var modalBodyInputGrid = document.createElement('div');
         modalBodyInputGrid.classList.add('modal-body-input');
 
-        var modalBodyInputDiv2 = document.createElement('div');
-        modalBodyInputDiv2.classList.add('modal-body-input');
+        if (accion != 'agregar') {
+            var modalBodyInputDiv2 = document.createElement('div');
+            modalBodyInputDiv2.classList.add('modal-body-input');
 
-        var modalLabelID = document.createElement('label');
-        modalLabelID.classList.add('modal-label');
-        modalLabelID.textContent = 'ID';
+            var modalLabelID = document.createElement('label');
+            modalLabelID.classList.add('modal-label');
+            modalLabelID.textContent = 'ID';
 
-        var modalInputID = document.createElement('input');
-        modalInputID.setAttribute('name', 'updateUId');
-        modalInputID.value = user[0].id;
-        modalInputID.type = 'text';
-        modalInputID.classList.add('modal-input');
-        modalInputID.readOnly = true;
+            var modalInputID = document.createElement('input');
+            modalInputID.setAttribute('name', 'updateUId');
+            modalInputID.value = user[0].id;
+            modalInputID.type = 'text';
+            modalInputID.classList.add('modal-input');
+            modalInputID.readOnly = true;
 
-        modalBodyInputDiv2.appendChild(modalLabelID);
-        modalBodyInputDiv2.appendChild(modalInputID);
-        modalBodyInputGrid.appendChild(modalBodyInputDiv2);
+            modalBodyInputDiv2.appendChild(modalLabelID);
+            modalBodyInputDiv2.appendChild(modalInputID);
+            modalBodyInputGrid.appendChild(modalBodyInputDiv2);
+        }
 
         var modalBodyInputDiv3 = document.createElement('div');
         modalBodyInputDiv3.classList.add('modal-body-input');
@@ -211,12 +222,6 @@
         var modalLabelRol = document.createElement('label');
         modalLabelRol.classList.add('modal-label');
         modalLabelRol.textContent = 'Rol';
-
-        // var modalInputRol = document.createElement('input');
-        // modalInputRol.value = user[0].rol;
-        // modalInputRol.type = 'text';
-        // modalInputRol.classList.add('modal-input');
-        // modalInputRol.readOnly = inputReadonly;
 
         // Crear el elemento select
         let selectRol = document.createElement('select');
@@ -259,27 +264,30 @@
             })
             .catch(error => console.error(error));
 
-        modalBodyInputDiv3.appendChild(modalLabelRol);
-        modalBodyInputDiv3.appendChild(selectRol);
-        modalBodyInputGrid.appendChild(modalBodyInputDiv3);
+            modalBodyInputDiv3.appendChild(modalLabelRol);
+            modalBodyInputDiv3.appendChild(selectRol);
+            modalBodyInputGrid.appendChild(modalBodyInputDiv3);
 
-        var modalBodyInputDiv4 = document.createElement('div');
-        modalBodyInputDiv4.classList.add('modal-body-input');
+        if (accion != 'agregar') {
 
-        var modalLabelNombreUsuario = document.createElement('label');
-        modalLabelNombreUsuario.classList.add('modal-label');
-        modalLabelNombreUsuario.textContent = 'Nombre de usuario';
+            var modalBodyInputDiv4 = document.createElement('div');
+            modalBodyInputDiv4.classList.add('modal-body-input');
 
-        var modalInputNombreUsuario = document.createElement('input');
-        modalInputNombreUsuario.setAttribute('name', 'userName');
-        modalInputNombreUsuario.value = user[0].userName;
-        modalInputNombreUsuario.type = 'text';
-        modalInputNombreUsuario.classList.add('modal-input');
-        modalInputNombreUsuario.readOnly = inputReadonly;
+            var modalLabelNombreUsuario = document.createElement('label');
+            modalLabelNombreUsuario.classList.add('modal-label');
+            modalLabelNombreUsuario.textContent = 'Nombre de usuario';
 
-        modalBodyInputDiv4.appendChild(modalLabelNombreUsuario);
-        modalBodyInputDiv4.appendChild(modalInputNombreUsuario);
-        modalBodyInputGrid.appendChild(modalBodyInputDiv4);
+            var modalInputNombreUsuario = document.createElement('input');
+            modalInputNombreUsuario.setAttribute('name', 'userName');
+            modalInputNombreUsuario.value = user[0].userName != null ? user[0].userName : '';
+            modalInputNombreUsuario.type = 'text';
+            modalInputNombreUsuario.classList.add('modal-input');
+            modalInputNombreUsuario.readOnly = inputReadonly;
+
+            modalBodyInputDiv4.appendChild(modalLabelNombreUsuario);
+            modalBodyInputDiv4.appendChild(modalInputNombreUsuario);
+            modalBodyInputGrid.appendChild(modalBodyInputDiv4);
+        }
 
         modalBodyContentDiv1.appendChild(modalBodyInputGrid);
         modalBodyDiv.appendChild(modalBodyContentDiv1);
@@ -293,12 +301,6 @@
         var modalLabelTipoDocumento = document.createElement('label');
         modalLabelTipoDocumento.classList.add('modal-label');
         modalLabelTipoDocumento.textContent = 'Tipo de documento';
-
-        // var modalInputTipoDocumento = document.createElement('input');
-        // modalInputTipoDocumento.value = user[0].typeDoc + ' (' + user[0].abbreviation + ')';
-        // modalInputTipoDocumento.type = 'text';
-        // modalInputTipoDocumento.classList.add('modal-input');
-        // modalInputTipoDocumento.readOnly = inputReadonly;
 
         // Crear el elemento select
         let selectTypeDoc = document.createElement('select');
@@ -354,13 +356,32 @@
 
         var modalInputNumeroDocumento = document.createElement('input');
         modalInputNumeroDocumento.setAttribute('name', 'numDoc');
-        modalInputNumeroDocumento.value = user[0].numDoc;
+        modalInputNumeroDocumento.value = user[0].numDoc != null ? user[0].numDoc : '';
         modalInputNumeroDocumento.type = 'text';
         modalInputNumeroDocumento.classList.add('modal-input');
         modalInputNumeroDocumento.readOnly = inputReadonly;
+        modalInputNumeroDocumento.id = 'numDoc';
 
         modalBodyInputDiv6.appendChild(modalLabelNumeroDocumento);
         modalBodyInputDiv6.appendChild(modalInputNumeroDocumento);
+
+        if (accion == 'agregar' || accion == 'editar') {
+            var modalLupa = document.createElement('div');
+            modalLupa.classList.add('lupa');
+            modalLupa.id = 'verifyNumDoc';
+
+            var modalIconLupa = document.createElement('i');
+            modalIconLupa.classList.add('fa-solid', 'fa-magnifying-glass');
+
+            var respuestaNumDoc = document.createElement('div')
+            respuestaNumDoc.id = 'respuestaNumDoc';
+
+            modalLupa.appendChild(modalIconLupa);
+            modalBodyInputDiv6.appendChild(respuestaNumDoc);
+            modalBodyInputDiv6.appendChild(modalLupa);
+
+        }
+
         modalBodyContentDiv2.appendChild(modalBodyInputDiv6);
 
         modalBodyDiv.appendChild(modalBodyContentDiv2);
@@ -377,10 +398,11 @@
 
         var modalInputNombre = document.createElement('input');
         modalInputNombre.setAttribute('name', 'name');
-        modalInputNombre.value = user[0].name;
+        modalInputNombre.value = user[0].name != null ? user[0].name : '';
         modalInputNombre.type = 'text';
         modalInputNombre.classList.add('modal-input');
-        modalInputNombre.readOnly = inputReadonly;
+        modalInputNombre.readOnly = 'true';
+        modalInputNombre.id = 'nameInput'
 
         modalBodyInputDiv7.appendChild(modalLabelNombre);
         modalBodyInputDiv7.appendChild(modalInputNombre);
@@ -395,10 +417,11 @@
 
         var modalInputApellido = document.createElement('input');
         modalInputApellido.setAttribute('name', 'lastName');
-        modalInputApellido.value = user[0].lastName;
+        modalInputApellido.value = user[0].lastName != null ? user[0].lastName : '';
         modalInputApellido.type = 'text';
         modalInputApellido.classList.add('modal-input');
-        modalInputApellido.readOnly = inputReadonly;
+        modalInputApellido.readOnly = 'true';
+        modalInputApellido.id = 'lastnameInput'
 
         modalBodyInputDiv8.appendChild(modalLabelApellido);
         modalBodyInputDiv8.appendChild(modalInputApellido);
@@ -418,7 +441,7 @@
 
         var modalInputCorreo = document.createElement('input');
         modalInputCorreo.setAttribute('name', 'email');
-        modalInputCorreo.value = user[0].email;
+        modalInputCorreo.value = user[0].email != null ? user[0].email : '';
         modalInputCorreo.type = 'text';
         modalInputCorreo.classList.add('modal-input');
         modalInputCorreo.readOnly = inputReadonly;
@@ -436,7 +459,7 @@
 
         var modalInputTelefono = document.createElement('input');
         modalInputTelefono.setAttribute('name', 'telephone');
-        modalInputTelefono.value = user[0].telephone;
+        modalInputTelefono.value = user[0].telephone != null ? user[0].telephone : '';
         modalInputTelefono.type = 'text';
         modalInputTelefono.classList.add('modal-input');
         modalInputTelefono.readOnly = inputReadonly;
@@ -465,11 +488,19 @@
         // Agregar el elemento 'div' con la clase 'modal-header' al elemento 'div' con la clase 'modal-content'
         modalContentDiv.appendChild(modalHeaderDiv);
 
+        if (accion == 'agregar') {
+            var inputAccion = document.createElement('input');
+            inputAccion.setAttribute('name', 'adduser')
+            inputAccion.type = 'hidden'
+
+            modalForm.appendChild(inputAccion)
+        }
+
         // Agregar el elemento 'div' con la clase 'modal-body' al elemento 'div' con la clase 'modal-content'
         modalForm.appendChild(respuestaAjax);
         modalForm.appendChild(modalBodyDiv);
 
-        if (accion == 'editar') {
+        if (accion == 'editar' || accion == 'agregar') {
             // Agregar el elemento 'div' con la clase 'modal-footer' al elemento 'div' con la clase 'modal-content'
             modalForm.appendChild(modalFooterDiv);
         }
@@ -480,6 +511,58 @@
         // Agregar el elemento 'div' con la clase 'modal' al documento
         document.body.appendChild(modalDiv);
 
+        var verifyNumDocC = document.getElementById('verifyNumDoc');
+
+        if (verifyNumDocC != null) {
+            verifyNumDocC.addEventListener('click', () => {
+                var inputNumDoc = document.getElementById("numDoc");
+                var nameInput = document.getElementById("nameInput");
+                var lastnameInput = document.getElementById("lastnameInput");
+                var respuestaNumDoc = $('.RespuestaAjax');
+                var numDoc = inputNumDoc.value;
+                mostrarSpinner()
+                $.ajax({
+                    type: "POST",
+                    url: "../view/ajax/gestion.php",
+                    data: {
+                        numDoc: numDoc,
+                        action: 'verifyNumDoc'
+                    },
+                    success: function (data) {
+                        ocultarSpinner()
+                        try {
+                            var dato = JSON.parse(data);
+                            if (dato.nombres != undefined) {
+                                nameInput.value = capitalizeWords(dato.nombres)
+                                lastnameInput.value = capitalizeWords(dato.apellidoPaterno + ' ' + dato.apellidoMaterno)
+                            } else {
+                                nameInput.value = ''
+                                lastnameInput.value = ''
+                            }
+                        } catch (error) {
+                            respuestaNumDoc.html(data);
+                            console.log(data)
+                            nameInput.value = ''
+                            lastnameInput.value = ''
+                        }
+                    }
+                });
+            })
+        }
+
+        // Agregar un controlador de eventos para cerrar el modal y reiniciar los valores
+        modalCloseButton.addEventListener('click', function () {
+            document.getElementById('formDatos').reset();
+            // Eliminar el modal del DOM
+            modalDiv.remove();
+        });
+
+    }
+
+    function capitalizeWords(texto) {
+        return texto.toLowerCase().replace(/(?:^|\s)\S/g, function (letra) {
+            return letra.toUpperCase();
+        });
     }
 
     //

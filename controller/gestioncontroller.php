@@ -330,4 +330,79 @@ class gestionController extends gestionModel
 
         return mainModel::alert($alerta);
     }
+
+    public function validarNumDoc()
+    {
+        $numDoc = strval($_POST['numDoc']);
+
+        if (strlen($numDoc) == 8) {
+            $validaDni = mainModel::validarDni($numDoc);
+            return $validaDni;
+        } else if (strlen($numDoc) == 11) {
+            $validaRuc = mainModel::validarRuc($numDoc);
+            return $validaRuc;
+        } else {
+            $alerta = [
+                "Alerta" => "simple",
+                "Titulo" => "Número no valido",
+                "Texto" => "Cantidad de dígitos no valido",
+                "Tipo" => "error"
+            ];
+
+            return mainModel::alert($alerta);
+        }
+    }
+
+    public function crearUsuarioC()
+    {
+        $conexion = Connection::connect();
+
+        $idRol = $_POST['idRol'];
+        $idTypeDoc = $_POST['idTypeDoc'];
+        $numDoc = $_POST['numDoc'];
+        $name = $_POST['name'];
+        $lastName = $_POST['lastName'];
+        $email = $_POST['email'];
+        $telephone = $_POST['telephone'];
+
+        $image = "assets/img/perfil/sin-fotografia.png";
+        $userName = mainModel::generateUserName($name, $lastName, $numDoc);
+        $password = mainModel::encryptePass($_POST['numDoc']);
+
+        $datosU = [
+            "idRol" => $idRol,
+            "idTypeDoc" => $idTypeDoc,
+            "numDoc" => $numDoc,
+            "name" => $name,
+            "lastName" => $lastName,
+            "email" => $email,
+            "userName" => $userName,
+            "password" => $password,
+            "image" => $image,
+            "telephone" => $telephone
+        ];
+
+        // Ejecuta la función agregarPersonal obteniendo el array de datos
+        $addProducto = gestionModel::createUserM($datosU);
+
+        if ($addProducto >= 1) { /* Si la consulta se ejecuta correctamente */
+            // Dará una alerta de éxito
+            $alerta = [
+                "Alerta" => "simple",
+                "Titulo" => "Usuario agregado",
+                "Texto" => "El usuario se agregó correctamente en el sistema",
+                "Tipo" => "success"
+            ];
+        } else {
+            // Dará una alerta de error
+            $alerta = [
+                "Alerta" => "simple",
+                "Titulo" => "Ocurrio un error inesperado",
+                "Texto" => "No hemos podido agregar al usuario",
+                "Tipo" => "error"
+            ];
+        }
+
+        return mainModel::alert($alerta);
+    }
 }

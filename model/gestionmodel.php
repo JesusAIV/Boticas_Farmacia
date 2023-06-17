@@ -159,4 +159,25 @@ class gestionModel extends mainModel
         return $result;
     }
 
+    protected function createUserM($datosU){
+        $conexion = Connection::connect();
+
+        $p_idRol = $datosU['idRol'];
+        $p_idTypeDoc = $datosU['idTypeDoc'];
+        $p_numDoc = $datosU['numDoc'];
+        $p_name = $datosU['name'];
+        $p_lastName = $datosU['lastName'];
+        $p_email = $datosU['email'];
+        $p_userName = $datosU['userName'];
+        $p_password = $datosU['password'];
+        $p_image = $datosU['image'];
+        $p_telephone = $datosU['telephone'];
+
+        $sql = "CALL CreateUserGestion($p_idRol, $p_idTypeDoc, $p_numDoc, '$p_name', '$p_lastName', '$p_email', '$p_userName', '$p_password', '$p_image', '$p_telephone')";
+
+        $result = $conexion->query($sql);
+
+        return $result;
+    }
+
 }

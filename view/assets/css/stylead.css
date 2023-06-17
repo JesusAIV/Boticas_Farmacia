@@ -200,10 +200,10 @@ a {
 .container-main {
     height: 100vh;
     display: grid;
-    grid-template-rows: 0.5fr 1fr;
-    gap: 10px;
+    grid-template-rows: auto 1fr;
     padding: 5rem 0 1rem 0;
     width: 100%;
+    gap: 15px;
 }
 
 .dash-top {
@@ -533,6 +533,7 @@ a.error_registro {
     flex-direction: column;
     padding: 10px 0;
     justify-content: center;
+    position: relative;
 }
 
 .modal-input {
@@ -565,6 +566,7 @@ button.modal-close {
 
 img.modal-img {
     width: 155px;
+    height: 155px;
     border-radius: 50%;
     border: 1px solid;
 }
@@ -577,6 +579,7 @@ label.modal-label-foto {
 .modal-img-editContainer {
     position: absolute;
     width: 155px;
+    height: 155px;
     border-radius: 50%;
     height: 100%;
     display: flex;
@@ -799,4 +802,25 @@ button.alert-confirm {
     100% {
         transform: scale(1)
     }
+}
+
+.content-btn-accion {
+    width: 90%;
+    margin: 0 auto;
+}
+
+.btn-accion-add {
+    padding: 10px;
+    cursor: pointer;
+}
+
+.lupa {
+    position: absolute;
+    top: 65%;
+    right: 0px;
+    background-color: var(--first-color);
+    padding: 5.7px 10px;
+    border-radius: 10px;
+    transform: translate(0px, -55%);
+    cursor: pointer;
 }
