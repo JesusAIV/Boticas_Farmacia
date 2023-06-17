@@ -12,6 +12,11 @@ if (!empty($_POST['action'])) {
         header("Content-Type: application/json");
         echo json_encode($mData, JSON_UNESCAPED_UNICODE);
     }
+    if ($_POST['action'] == 'viewProduct') {
+        $mData = $gestion->ProductByIdC($_POST['id']);
+        header("Content-Type: application/json");
+        echo json_encode($mData, JSON_UNESCAPED_UNICODE);
+    }
     if ($_POST['action'] == 'listRol') {
         echo $gestion->ListRolC();
     }

@@ -180,4 +180,53 @@ class gestionModel extends mainModel
         return $result;
     }
 
+    protected function obtenerProductosM($inicio, $cantidad)
+    {
+
+        $conexion = Connection::connect();
+
+        $sql = "CALL ListProductsGestion($inicio, $cantidad)";
+        $result = $conexion->query($sql);
+
+        $registros = [];
+        while ($row = $result->fetch_assoc()) {
+            $registros[] = $row;
+        }
+
+        return $registros;
+    }
+
+        /**
+     * Función que cuenta el total de cantidad de registros de la tabla usuario
+     *
+     * @param int $idUser
+     * @return int Total de usuarios
+     */
+    protected function contarProductsM()
+    {
+
+        $conexion = Connection::connect();
+
+        $sql = "CALL CountProducts()";
+        $result = $conexion->query($sql);
+        $row = $result->fetch_assoc();
+
+        return $row['totalProducts'];
+    }
+
+        /**
+     * Funcion que devuelve todos los datos de un usuario buscado por su id
+     *
+     * @param int $idUser
+     * @return mixed retorna el query con los datos del usuario
+     */
+    protected function ProductByIdM($idProduct)
+    {
+        $conexion = Connection::connect();
+
+        $sql = "CALL ProductById($idProduct)";
+        $result = $conexion->query($sql);
+        return $result;
+    }
+
 }

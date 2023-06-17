@@ -26,10 +26,9 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title><?php echo NAME ?></title>
     <script src="https://code.jquery.com/jquery-3.7.0.min.js"></script>
-    <link rel="stylesheet" type="text/css" href="<?php echo SERVERURL ?>view/assets/css/stylead.css">
     <?php
         // if (!empty($_SESSION['id']) && $viewurl == 'gestion') {
-        if ($viewurl != 'gestion') {
+        if ($viewurl == 'gestion') {
             echo '<link rel="stylesheet" type="text/css" href="'.SERVERURL.'view/assets/css/stylead.css">';
             // echo '<script src="'.SERVERURL.'view/assets/js/graficos.js"></script>';
             // echo '<script src="'.SERVERURL.'view/assets/js/gestion.js"></script>';
@@ -38,9 +37,9 @@
         }
     ?>
     <link rel="stylesheet" href="https://site-assets.fontawesome.com/releases/v6.4.0/css/all.css">
-    <script src="sidebar.js"></script>
-    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
-    <script src="graficos.js"></script>
+    <!-- <script src="sidebar.js"></script> -->
+    <!-- <script src="https://cdn.jsdelivr.net/npm/chart.js"></script> -->
+    <!-- <script src="graficos.js"></script> -->
 </head>
 
 <body>

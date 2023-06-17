@@ -1,10 +1,5 @@
-*{
-    margin: 0;
-    padding: 0;
-    box-sizing: border-box;
-}
-
 body {
+    background-color: black;
     display: flex;
     justify-content: center;
     align-items: center;
@@ -13,20 +8,29 @@ body {
 }
 
 .login-container {
-    width: 400px;
-    padding: 20px;
+    width: 30vh;
+    padding: 102px;
     border: 1px solid #3E517A;
     border-radius: 5px;
     background-color: #3E517A;
     text-align: center;
 }
 
-.logo {
-    margin-bottom: 20px;
+.container {
+    display: flex;
+    justify-content: center;
+    height: 19vh;
+}
+
+.container img {
+    max-width: 90%;
+    max-height: 90%;
+    border-radius: 50%;
 }
 
 .form-group {
-    margin-bottom: 15px;
+    margin-bottom: 19px;
+    width: 100%;
 }
 
 .form-group label {
@@ -37,9 +41,9 @@ body {
 
 .form-group input {
     width: 100%;
-    padding: 5px;
-    border: 1px solid #ccc;
-    border-radius: 3px;
+    padding: 11px;
+    border: 3px solid #ccc;
+    border-radius: 5px;
 }
 
 .captcha-container {
@@ -56,17 +60,17 @@ body {
 }
 
 .login-button {
-    padding: 8px 20px;
+    padding: 13px 40px;
     background-color: #4CAF50;
     border: none;
-    border-radius: 3px;
+    border-radius: 18px;
     color: #fff;
     font-weight: bold;
     cursor: pointer;
 }
 
 .forgot-password {
-    margin-top: 10px;
+    margin-top: 100px;
     text-decoration: none;
     color: #fff;
     font-size: 12px;
