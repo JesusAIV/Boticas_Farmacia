@@ -1,20 +1,20 @@
 <?php
-    if (session_status() === PHP_SESSION_NONE) {
-        session_start();
-    }
+if (session_status() === PHP_SESSION_NONE) {
+    session_start();
+}
 
-    require_once "./config/constantes.php";
+require_once "./config/constantes.php";
 
-    $viewurl = "";
+$viewurl = "";
 
-    if(empty($_GET['views'])){
-        $viewurl = "inicio";
-    } else {
-        // Separa el "/" de la url y obtiene la vista ingresada en la url
-        $pagina = explode("/", $_GET['views']);
-        // Obtiene la posicion "0"
-        $viewurl = $pagina[0];
-    }
+if (empty($_GET['views'])) {
+    $viewurl = "inicio";
+} else {
+    // Separa el "/" de la url y obtiene la vista ingresada en la url
+    $pagina = explode("/", $_GET['views']);
+    // Obtiene la posicion "0"
+    $viewurl = $pagina[0];
+}
 ?>
 
 <!DOCTYPE html>
@@ -27,36 +27,34 @@
     <title><?php echo NAME ?></title>
     <script src="https://code.jquery.com/jquery-3.7.0.min.js"></script>
     <?php
-        // if (!empty($_SESSION['id']) && $viewurl == 'gestion') {
-        if ($viewurl == 'gestion') {
-            echo '<link rel="stylesheet" type="text/css" href="'.SERVERURL.'view/assets/css/stylead.css">';
-            // echo '<script src="'.SERVERURL.'view/assets/js/graficos.js"></script>';
-            // echo '<script src="'.SERVERURL.'view/assets/js/gestion.js"></script>';
-        } elseif ($viewurl == 'login') {
-            echo '<link rel="stylesheet" type="text/css" href="'.SERVERURL.'view/assets/css/stylelogin.css">';
-        }
+    // if (!empty($_SESSION['id']) && $viewurl == 'gestion') {
+    if ($viewurl == 'gestion') {
+        echo '<link rel="stylesheet" type="text/css" href="' . SERVERURL . 'view/assets/css/stylead.css">';
+    } elseif ($viewurl == 'login') {
+        echo '<link rel="stylesheet" type="text/css" href="' . SERVERURL . 'view/assets/css/stylelogin.css">';
+    } elseif ($viewurl != 'gestion' || $viewurl != 'login') {
+        echo '<link rel="stylesheet" type="text/css" href="' . SERVERURL . 'view/assets/css/style.css">';
+        include './view/script/inicioclient.php';
+    }
     ?>
     <link rel="stylesheet" href="https://site-assets.fontawesome.com/releases/v6.4.0/css/all.css">
-    <!-- <script src="sidebar.js"></script> -->
-    <!-- <script src="https://cdn.jsdelivr.net/npm/chart.js"></script> -->
-    <!-- <script src="graficos.js"></script> -->
 </head>
 
 <body>
     <?php
-        $ajax = false;
-        require_once "./controller/viewController.php";
-        $view = new viewController();
-        $vistas = $view->obtenervistacontrolador();
+    $ajax = false;
+    require_once "./controller/viewController.php";
+    $view = new viewController();
+    $vistas = $view->obtenervistacontrolador();
 
-        if ($vistas == "inicio") {
-            $vistas = "./view/content/inicio.php";
-        }
+    if ($vistas == "inicio") {
+        $vistas = "./view/content/inicio.php";
+    }
     ?>
 
     <?php
     $classMain = "";
-    if ($viewurl === 'gestion'){
+    if ($viewurl === 'gestion') {
         include "layout/contentad.php";
         $classMain = "container-main";
     } else {
@@ -71,10 +69,11 @@
 
     <?php
     if (!empty($_SESSION['id']) && $viewurl == 'gestion') {
-        echo '<script src="'.SERVERURL.'view/assets/js/export.js"></script>';
-        echo '<script src="'.SERVERURL.'view/assets/js/gestion.js"></script>';
+        echo '<script src="' . SERVERURL . 'view/assets/js/export.js"></script>';
+        echo '<script src="' . SERVERURL . 'view/assets/js/gestion.js"></script>';
+    } elseif ($viewurl != 'gestion' || $viewurl != 'login'){
+        include './view/script/footeriniciocliente.php';
     }
     ?>
-<script src="<?php echo SERVERURL ?>view/assets/js/modal.js"></script>
 </body>
 </html>

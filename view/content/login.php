@@ -3,7 +3,7 @@
         <img src="https://www.designevo.com/res/templates/thumb_small/unique-blue-cross-and-capsule.webp" alt="Logo">
     </div>
     <form method="POST">
-        <div class="form-group">
+        <div class="form-group ">
             <label for="user">Usuario:</label>
             <input type="text" id="user" name="user" required>
         </div>
