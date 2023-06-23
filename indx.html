@@ -1,0 +1,38 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Facturación Electrónica </title>
+    <link rel="stylesheet" type="text/css" href="style.css">
+    <script src="script.js"></script>
+</head>
+<body>
+    <h1>Prototipo de Facturación Electrónica para Farmacia</h1>
+
+    <form>
+        <label for="nombre_cliente">Nombre del cliente:</label>
+        <input type="text" id="nombre_cliente" required><br>
+
+        <table id="tabla_productos">
+            <tr>
+                <th>Producto</th>
+                <th>Cantidad</th>
+                <th>Precio Unitario</th>
+                <th>Subtotal</th>
+            </tr>
+            <!-- Aquí se agregarán dinámicamente filas para los productos -->
+        </table>
+
+        <button type="button" onclick="agregarFila()">Agregar Producto</button>
+
+        <label for="total">Total a pagar:</label>
+        <input type="number" id="total" readonly>
+
+        <button type="button" onclick="generarFactura()">Generar Factura</button>
+    </form>
+    
+    <div id="factura_generada" style="display: none;">
+        <h2>Factura Generada</h2>
+        <!-- Aquí se mostraría la información de la factura generada -->
+    </div>
+</body>
+</html>
